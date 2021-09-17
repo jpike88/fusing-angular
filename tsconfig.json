@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ],
+    "declaration": true,
+    "removeComments": true,
+    "stripInternal": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "noEmit": true
+  },
+  "include": [
+    "tools"
+  ],
+  "exclude": [
+    "tools/scripts/jest-setup.ts"
+  ],
+  "files": [
+    "fuse.ts"
+  ]
+}

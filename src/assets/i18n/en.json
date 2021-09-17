@@ -1,0 +1,14 @@
+{
+  "LANG": {
+    "EN": "English",
+    "JP": "Japanese"
+  },
+  "MENU": {
+    "HOME": "Home",
+    "ABOUT": "About"
+  },
+  "HOME": {
+    "TITLE": "Fusing Angular",
+    "LG": "Languages"
+  }
+}

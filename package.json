@@ -1,0 +1,266 @@
+{
+  "name": "fusing-angular",
+  "description": "fusing-angular",
+  "author": "Patrick Michalina",
+  "license": "MIT",
+  "version": "0.0.1",
+  "main": "dist/desktop/bytecode.js",
+  "repository": {
+    "url": "https://github.com/patrickmichalina/fusing-angular"
+  },
+  "scripts": {
+    "postinstall": "ngcc && ts-node tools/scripts/bug.fixes.ts",
+    "test": "jest",
+    "test.cov": "jest --coverage",
+    "test.watch": "jest --watch",
+    "build": "ts-node -r dotenv/config fuse --pwa",
+    "build.prod": "ts-node -r dotenv/config fuse --aot --prod --pwa --verbose",
+    "build.desktop": "ts-node -r dotenv/config fuse --electron",
+    "build.desktop.prod": "ts-node -r dotenv/config fuse --aot --prod --pwa --electron --verbose",
+    "start": "ts-node -r dotenv/config fuse --watch --serve",
+    "start.pwa": "ts-node -r dotenv/config fuse --watch --serve --pwa",
+    "start.prod": "ts-node -r dotenv/config fuse --serve --prod --aot --pwa",
+    "start.desktop": "ts-node -r dotenv/config fuse --watch --serve --electron",
+    "start.desktop.prod": "ts-node -r dotenv/config fuse --serve --prod --aot --pwa --electron",
+    "start.built": "node dist/server_entry.js",
+    "lint": "npm run lint.app & npm run lint.tools",
+    "lint.app": "node_modules/.bin/ngc -p src/tsconfig.json & tslint -p src/tsconfig.json",
+    "lint.tools": "tsc && tslint -p tsconfig.json",
+    "gen.apple-icons": "pwa-asset-generator src/assets/img/logo.png src/assets/icons",
+    "gen.favicons": "ts-node tools/scripts/favicons.ts",
+    "gen.icons": "npm run gen.favicons & npm run gen.apple-icons",
+    "heroku-postbuild": "npm run lint && npm run test.cov && npm run build.prod",
+    "release.prep": "npm run build.desktop.prod && BUILD_BYTECODE=true electron dist/desktop/bytecode.js",
+    "release.mac": "npm run release.prep && ts-node tools/scripts/electron-deps.ts && electron-builder --mac && ts-node -r dotenv/config tools/scripts/electron-deps-revert.ts "
+  },
+  "engines": {
+    "node": "= 12.8.1"
+  },
+  "fusebox": {
+    "ignore": {
+      "browser": [],
+      "server": [
+        "domino",
+        "throng",
+        "pino"
+      ],
+      "electron": [
+        "electron",
+        "pino"
+      ]
+    }
+  },
+  "electron-dependencies": [
+    "bytenode",
+    "pino"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test"
+    }
+  },
+  "dependencies": {
+    "@angular/platform-server": "9.0.0-rc.0",
+    "pino": "^5.13.5",
+    "source-map-support": "^0.5.16",
+    "throng": "^4.0.0"
+  },
+  "devDependencies": {
+    "@angular/animations": "9.0.0-rc.0",
+    "@angular/common": "9.0.0-rc.0",
+    "@angular/compiler": "9.0.0-rc.0",
+    "@angular/compiler-cli": "9.0.0-rc.0",
+    "@angular/core": "9.0.0-rc.0",
+    "@angular/forms": "9.0.0-rc.0",
+    "@angular/language-service": "9.0.0-rc.0",
+    "@angular/platform-browser": "9.0.0-rc.0",
+    "@angular/platform-browser-dynamic": "9.0.0-rc.0",
+    "@angular/router": "9.0.0-rc.0",
+    "@angular/service-worker": "9.0.0-rc.0",
+    "@flosportsinc/ng-env-transfer-state": "^13.2.2",
+    "@flosportsinc/ng-http-cache-tags": "^13.2.2",
+    "@nguniversal/common": "^9.0.0-next.6",
+    "@nguniversal/express-engine": "^9.0.0-next.6",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
+    "@types/body-parser": "^1.17.1",
+    "@types/clean-css": "^4.2.1",
+    "@types/compression": "1.0.1",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express": "^4.17.1",
+    "@types/jest": "^24.0.21",
+    "@types/node": "^12.12.3",
+    "@types/pino": "^5.8.13",
+    "@types/sharp": "^0.23.0",
+    "@types/supertest": "^2.0.8",
+    "@types/terser": "^3.12.0",
+    "@types/throng": "^4.0.2",
+    "@types/yargs": "^13.0.3",
+    "body-parser": "^1.19.0",
+    "bytenode": "^1.1.2",
+    "change-case": "^3.1.0",
+    "clean-css": "^4.2.1",
+    "clean-stack": "^2.2.0",
+    "codelyzer": "^5.2.0",
+    "compression": "git://github.com/patrickmichalina/compression.git",
+    "consolidate": "^0.15.1",
+    "cookie-parser": "1.4.4",
+    "core-js": "^3.3.6",
+    "dotenv": "^8.2.0",
+    "electron": "^7.0.0",
+    "electron-builder": "^22.1.0",
+    "electron-updater": "^4.2.0",
+    "express": "^4.17.1",
+    "express-pino-logger": "^4.0.0",
+    "express-static-gzip": "^2.0.5",
+    "fuse-box": "4.0.0-next.142",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "jest-preset-angular": "^8.0.0",
+    "pino-multi-stream": "^4.2.0",
+    "pino-pretty": "^3.2.2",
+    "pug": "^2.0.4",
+    "pwa-asset-generator": "^2.0.2",
+    "rxjs": "^6.5.3",
+    "sharp": "^0.23.2",
+    "supertest": "^4.0.2",
+    "terser": "^4.3.9",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "tslint-immutable": "^6.0.1",
+    "typescript": "3.6.4",
+    "typescript-monads": "^3.13.0",
+    "yargs": "^14.2.0",
+    "zone.js": "^0.10.2"
+  },
+  "jest": {
+    "rootDir": "src",
+    "preset": "jest-preset-angular",
+    "collectCoverageFrom": [
+      "<rootDir>/**/*.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "dist",
+      ".fusebox",
+      "ngc"
+    ],
+    "setupFilesAfterEnv": [
+      "../tools/scripts/jest-setup.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "src/tsconfig.json",
+        "stringifyContentPathRegex": "\\.html$",
+        "astTransformers": [
+          "jest-preset-angular/build/InlineFilesTransformer",
+          "jest-preset-angular/build/StripStylesTransformer"
+        ],
+        "diagnostics": {
+          "pathRegex": "\\.(spec|test)\\.ts$"
+        }
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/ngc",
+      "<rootDir>/.fusebox",
+      "<rootDir>/dist"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "text",
+      "text-summary"
+    ],
+    "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "src/browser/": {
+        "statements": 25
+      }
+    }
+  },
+  "build": {
+    "productName": "Fusing Angular",
+    "appId": "com.fusing-angular.desktop",
+    "icon": "dist/desktop/wwwroot/assets/icons",
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "icon": "dist/desktop/icon.icns",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "artifactName": "fusing-angular-${version}.${os}.${ext}",
+      "entitlements": "tools/entitlements/entitlements.mac.plist",
+      "type": "distribution",
+      "files": [
+        "dist/desktop",
+        "dist/desktop/icon.icns",
+        "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+        "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+        "!**/node_modules/*.d.ts",
+        "!**/node_modules/.bin",
+        "!**/*.{br,map,gz,md,iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj,test.js}",
+        "!.editorconfig",
+        "!**/._*",
+        "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+        "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+        "!**/{appveyor.yml,.travis.yml,circle.yml}",
+        "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+      ],
+      "electronLanguages": [
+        "en",
+        "ja"
+      ],
+      "target": [
+        "dmg",
+        "mas"
+      ]
+    },
+    "mas": {
+      "hardenedRuntime": true,
+      "entitlements": "tools/entitlements/entitlements.mas.plist",
+      "entitlementsInherit": "tools/entitlements/entitlements.mas.inherit.plist"
+    },
+    "win": {
+      "files": [
+        "dist/desktop",
+        "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+        "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+        "!**/node_modules/*.d.ts",
+        "!**/node_modules/.bin",
+        "!**/*.{br,map,gz,md,iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj,test.js}",
+        "!.editorconfig",
+        "!**/._*",
+        "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+        "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+        "!**/{appveyor.yml,.travis.yml,circle.yml}",
+        "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+      ],
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "fusing-angular-${version}.${os}.${ext}"
+    },
+    "linux": {
+      "files": [
+        "dist/desktop",
+        "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+        "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+        "!**/node_modules/*.d.ts",
+        "!**/node_modules/.bin",
+        "!**/*.{br,map,gz,md,iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj,test.js}",
+        "!.editorconfig",
+        "!**/._*",
+        "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+        "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+        "!**/{appveyor.yml,.travis.yml,circle.yml}",
+        "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+      ],
+      "artifactName": "fusing-angular-${version}.${os}.${ext}"
+    }
+  }
+}
